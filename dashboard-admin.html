@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Tracker System - Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="has-dashboard">
+    <div class="dashboard">
+        <div class="dashboard-header">
+            <h1>System Admin Dashboard</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="card">
+                <h2>Manage User Accounts</h2>
+                <p>Create, edit, or delete user accounts</p>
+                <button class="btn btn-secondary" onclick="openManageUsers()">Manage Users</button>
+            </div>
+            
+            <div class="card">
+                <h2>Assign Role to Worker</h2>
+                <p>Assign roles to system workers</p>
+                <button class="btn btn-secondary" onclick="openAssignRole()">Assign Roles</button>
+            </div>
+            
+            <div class="card">
+                <h2>Generate Reports and Backup Data</h2>
+                <p>Generate system reports and backup data</p>
+                <button class="btn btn-secondary" onclick="openReports()">Reports & Backup</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Manage Users Modal -->
+    <div id="manageUsersModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2>Manage User Accounts</h2>
+                <button class="close-btn" onclick="closeModal('manageUsersModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-secondary" onclick="openAddUser(); closeModal('manageUsersModal');" style="margin-bottom: 20px;">Add New User</button>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('manageUsersModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New User</h2>
+                <button class="close-btn" onclick="closeModal('addUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role *</label>
+                        <select id="role" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="receptionist">Receptionist</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="system_admin">System Admin</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('addUserModal')">Cancel</button>
+                <button class="btn-submit" onclick="submitAddUser(); setTimeout(() => openManageUsers(), 500);">Add User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Role Modal -->
+    <div id="editUserRoleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit User Role</h2>
+                <button class="close-btn" onclick="closeModal('editUserRoleModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserRoleForm">
+                    <input type="hidden" id="editUserRoleId" name="userId">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <p id="editUserRoleUsername" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserRoleSelect">Role *</label>
+                        <select id="editUserRoleSelect" name="role" required>
+                            <option value="receptionist">Receptionist</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="system_admin">System Admin</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('editUserRoleModal')">Cancel</button>
+                <button class="btn-submit" onclick="submitEditUserRole(); setTimeout(() => openManageUsers(), 500);">Update Role</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Modal -->
+    <div id="reportsModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>Generate Reports and Backup</h2>
+                <button class="close-btn" onclick="closeModal('reportsModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="reportContent"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('reportsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="patients.js"></script>
+    <script src="appointments.js"></script>
+    <script src="healthRecords.js"></script>
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
+
